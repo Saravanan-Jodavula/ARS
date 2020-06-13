@@ -1,0 +1,14 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "remote server for Agility Response System",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "author": "jvs.ravanan@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
