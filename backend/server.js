@@ -10,20 +10,18 @@ app.use(body_parser.urlencoded({ extended: false }));
 // /session(post), /session/:sid(get), /session/:pid(get), /profile(post)
 
 app.post("/session", (req, res) => {
-    dbQuery.pushSession(req)
-    .then((response)=>res.status(200).json(response.response))
-    .catch((response)=>{res.status(400).json(response); console.log(response)})  
+    dbQuery.pushSession(req, res)
   });
 app.post("/profile", (req, res) => {
-      dbQuery.pushProfile(req)
-      .then((response)=>{res.status(200).json(response.response); client.end()})
-      .catch((response)=>{res.status(400).json(response); console.log(response)})
+      dbQuery.pushProfile(req,res)
     });
 app.get("/profile/:pid", (req, res) => {
         console.log(req.params.pid)
-        dbQuery.getProfile(req)
-        .then((response)=>{res.status(200).json(response.response); client.end()})
-        .catch((response)=>{res.status(400).json(response); console.log(response); client.end()})
+        dbQuery.getProfile(req,res)
+      });
+app.get("/session/:pid", (req, res) => {
+        console.log(req.params.pid)
+        dbQuery.getSession(req,res)
       });
 
 
