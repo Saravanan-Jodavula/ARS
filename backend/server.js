@@ -35,10 +35,11 @@ app.get("/session/usersavg/:leg/:pid/:date", (req, res) => {
         .then((resp)=>res.status(200).json(resp))
         .catch((err)=>res.status(400).json(err))
       });
-app.get("/session/:pid", (req, res) => {
-        console.log(req.params.pid)
-        dbQuery.getSession(req,res)
-      });
+app.post("/endsession", (req, res) => {
+        dbQuery.endSession(req,res)
+        .then((resp)=>res.status(200).json(resp))
+        .catch((err)=>res.status(400).json(err))
+});
 
 
 

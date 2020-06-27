@@ -100,6 +100,21 @@ async function getUserAverageDate(req,res) {
   return resp
 }
 
+async function endSession(req,res) {
+  var client = new Client();
+ client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+  await client.query("update sessions set current = false where current = true;")
+  .then((response)=>{resp.message = "session ended successfully"; resp.rows_affected = response.rowCount })
+  .catch((err)=>{resp.error = err; console.log(err); })   
+  client.end();
+  return resp
+}
 
 module.exports={
     pushSession:pushSession,
@@ -107,5 +122,6 @@ module.exports={
     getProfile: getProfile,
     getSession: getSession,
     getUserAverage: getUserAverage,
-    getUserAverageDate: getUserAverageDate
+    getUserAverageDate: getUserAverageDate,
+    endSession: endSession
   }
