@@ -59,9 +59,33 @@ let getSession = function(req,res) {
   .catch((err)=>{res.status(400).json(err); console.log(err); client.end();})   
   // console.log(resp)   
 }
+
+async function getUserAverage(req,res) {
+  var client = new Client();
+ client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+  await client.query("select avg(cast(session_data -> $1 as float)) from sessions where profile_id = $2;",[req.params.leg, req.params.pid])
+  .then((response)=>{resp.userAverage = (response.rows[0].avg); })
+  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+  
+  await client.query("select avg(cast(session_data -> $1 as float)) from sessions;",[req.params.leg])
+  .then((response)=>{resp.totalAverage = (response.rows[0].avg); })
+  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+  client.end();
+  // console.log(resp)
+  // res.status(200).json(resp)
+  return resp
+
+}
 module.exports={
     pushSession:pushSession,
     pushProfile: pushProfile,
     getProfile: getProfile,
-    getSession: getSession
+    getSession: getSession,
+    getUserAverage: getUserAverage
   }
