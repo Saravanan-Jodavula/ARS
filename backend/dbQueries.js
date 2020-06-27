@@ -138,6 +138,54 @@ async function currentVsAllAverage(req,res) {
   return resp
 }
 
+async function getCurrentSession(req,res) {
+  const resp = {}
+  var client = new Client();
+ client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+  await client.query("select * from sessions where current = true;")
+  .then((response)=>{resp.data = response.rows; console.log(response.rows)})
+  .catch((err)=>{resp.error = err; console.log(err); })   
+  client.end();
+  return resp
+}
+
+async function getPeakData(req,res) {
+  let resp = {}
+  var client = new Client();
+ client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+  await client.query("select max(cast(session_data -> $1 as float)) from sessions where profile_id = $2;",[req.params.leg, req.params.pid])
+  .then((response)=>{resp.userMax = (response.rows[0].max); console.log('0');})
+  .catch((err)=>{res.status(400).json(err); console.log(err);})   
+  
+  await client.query("select max(cast(session_data -> $1 as float)) from sessions;",[req.params.leg])
+  .then((response)=>{resp.totalMax = (response.rows[0].max);   console.log('1');})
+  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+
+  await client.query("select min(cast(session_data -> $1 as float)) from sessions where profile_id = $2;",[req.params.leg, req.params.pid])
+  .then((response)=>{resp.userMin = (response.rows[0].min); console.log('2');})
+  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+  
+  await client.query("select min(cast(session_data -> $1 as float)) from sessions;",[req.params.leg])
+  .then((response)=>{resp.totalMin = (response.rows[0].min); console.log('3');})
+  .catch((err)=>{res.status(400).json(err); console.log(err); })     
+  
+  client.end();
+  console.log('hi')
+  return resp
+}
+
 module.exports={
     pushSession:pushSession,
     pushProfile: pushProfile,
@@ -146,5 +194,7 @@ module.exports={
     getUserAverage: getUserAverage,
     getUserAverageDate: getUserAverageDate,
     endSession: endSession,
-    currentVsAllAverage: currentVsAllAverage
+    currentVsAllAverage: currentVsAllAverage,
+    getCurrentSession: getCurrentSession,
+    getPeakData: getPeakData
   }

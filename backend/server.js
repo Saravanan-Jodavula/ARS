@@ -41,10 +41,21 @@ app.get("/session/usersavg/:leg/:pid/:date", (req, res) => {
         .then((resp)=>res.status(200).json(resp))
         .catch((err)=>res.status(400).json(err))
       });
+app.get("/currentsession", (req, res) => {
+        // console.log(req.params.pid + req.params.date)
+        dbQuery.getCurrentSession(req,res)
+        .then((resp)=>res.status(200).json(resp))
+        .catch((err)=>res.status(400).json(err))
+      });
 app.post("/endsession", (req, res) => {
         dbQuery.endSession(req,res)
         .then((resp)=>res.status(200).json(resp))
         .catch((err)=>res.status(400).json(err))
+});
+app.get("/peakdata/:leg/:pid", (req, res) => {
+  dbQuery.getPeakData(req,res)
+  .then((resp)=>res.status(200).json(resp))
+  .catch((err)=>res.status(400).json(err))
 });
 
 
