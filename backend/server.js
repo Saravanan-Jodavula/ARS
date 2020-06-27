@@ -24,14 +24,16 @@ app.get("/session/:pid", (req, res) => {
         dbQuery.getSession(req,res)
       });
 app.get("/session/usersavg/:leg/:pid", (req, res) => {
-        console.log(req.params.pid + req.params.date)
+        // console.log(req.params.pid + req.params.date)
         dbQuery.getUserAverage(req,res)
         .then((resp)=>res.status(200).json(resp))
         .catch((err)=>res.status(400).json(err))
       });
-app.get("/session/usersavg/:pid/:date", (req, res) => {
-        console.log(req.params.pid + req.params.date)
+app.get("/session/usersavg/:leg/:pid/:date", (req, res) => {
+        // console.log(req.params.pid + req.params.date)
         dbQuery.getUserAverageDate(req,res)
+        .then((resp)=>res.status(200).json(resp))
+        .catch((err)=>res.status(400).json(err))
       });
 app.get("/session/:pid", (req, res) => {
         console.log(req.params.pid)
