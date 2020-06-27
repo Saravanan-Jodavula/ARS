@@ -29,6 +29,12 @@ app.get("/session/usersavg/:leg/:pid", (req, res) => {
         .then((resp)=>res.status(200).json(resp))
         .catch((err)=>res.status(400).json(err))
       });
+app.get("/session/currentvsall/:leg/:pid", (req, res) => {
+        // console.log(req.params.pid + req.params.date)
+        dbQuery.currentVsAllAverage(req,res)
+        .then((resp)=>res.status(200).json(resp))
+        .catch((err)=>res.status(400).json(err))
+      });
 app.get("/session/usersavg/:leg/:pid/:date", (req, res) => {
         // console.log(req.params.pid + req.params.date)
         dbQuery.getUserAverageDate(req,res)
