@@ -49,7 +49,7 @@
               :title="$t('Left Hand 20 Instances')"
             >
               <div ref="myChart">
-                <va-chart :data="chartData" :key="sex" type="vertical-bar"/>
+                <va-chart :data="chartData" :key="instanceFlag" type="vertical-bar"/>
               </div>
             </va-card>
           </va-card>
@@ -59,11 +59,29 @@
     </div>
     <div class="row">
       <div class="flex md12 xs12">
+        <va-card>
+          <form @submit="gett">
+            <div class="row">
+              <div class="flex lg12 md12 sm12 xs12">
+                <va-date-picker
+                  :label="$t('Date')"
+                  v-model="date"
+                />
+                <div class="flex lg6 md6 sm6 xs12">
+                  <va-button @click.prevent="gett2">
+                    Get details
+                  </va-button>
+                </div>
+              </div>
+            </div>
+          </form>
+        </va-card>
+        <br>
         <va-card
           class="chart-widget"
-          :title="$t('charts.lineChart')"
+          :title="$t('user average vs total averages on a given day')"
         >
-          <va-chart :data="lineChartData" type="line"/>
+          <va-chart v-if="dateFlag" :key="instanceFlag2" :data="lineChartData" type="line"/>
         </va-card>
       </div>
     </div>
@@ -74,7 +92,7 @@
           class="chart-widget"
           :title="$t('Current User Vs All Users Average')"
         >
-          <va-chart :data="verticalBarChartDataAvg" :key="sex" type="vertical-bar"/>
+          <va-chart :data="verticalBarChartDataAvg" :key="instanceFlag" type="vertical-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -91,15 +109,33 @@
 
 <script>
 import axios from 'axios'
-import { getLineChartData } from '../../../data/charts/LineChartData'
-
+import { hex2rgb } from '../../../services/vuestic-ui'
 export default {
   name: 'charts',
   data () {
     return {
-      sex: true,
+      date: null,
+      instanceFlag: true,
+      instanceFlag2: true,
+      dateFlag: false,
       twentyInstances: false,
-      lineChartData: getLineChartData(this.$themes),
+      lineChartData: {
+        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        datasets: [
+          {
+            label: 'global data',
+            backgroundColor: hex2rgb(this.$themes.primary, 0.6).css,
+            borderColor: 'transparent',
+            data: [],
+          },
+          {
+            label: 'userdata',
+            backgroundColor: hex2rgb(this.$themes.info, 0.6).css,
+            borderColor: 'transparent',
+            data: [],
+          },
+        ],
+      },
 
       limbs: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
       limb: null,
@@ -212,7 +248,55 @@ export default {
         })
         .catch((err) => console.log(err))
       this.twentyInstances = true
-      this.sex = !this.sex
+      this.instanceFlag = !this.instanceFlag
+    },
+    async gett2 () {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-leg/${this.$store.state.pid}/${this.date}:`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+          this.lineChartData.datasets[0].data.push(response.data.totalAverage)
+          this.lineChartData.datasets[1].data.push(response.data.userAverage)
+          console.log(response.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-leg/${this.$store.state.pid}/${this.date}:`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+          this.lineChartData.datasets[0].data.push(response.data.totalAverage)
+          this.lineChartData.datasets[1].data.push(response.data.userAverage)
+          console.log(response.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-hand/${this.$store.state.pid}/${this.date}:`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+          this.lineChartData.datasets[0].data.push(response.data.totalAverage)
+          this.lineChartData.datasets[1].data.push(response.data.userAverage)
+          console.log(response.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-hand/${this.$store.state.pid}/${this.date}:`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+          this.lineChartData.datasets[0].data.push(response.data.totalAverage)
+          this.lineChartData.datasets[1].data.push(response.data.userAverage)
+          console.log(response.data)
+        })
+        .catch((err) => console.log(err))
+      this.dateFlag = true
+      this.instanceFlag2 = !this.instanceFlag
     },
   },
 }
