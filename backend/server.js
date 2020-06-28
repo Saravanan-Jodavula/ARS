@@ -1,12 +1,21 @@
 const express = require("express");
-const port_number = process.env.PORT || 8080; //PORT SPECIFIED IN THE .env file
+const port_number = process.env.PORT || 8000; //PORT SPECIFIED IN THE .env file
 const app = express();
 dbQuery = require('./dbQueries')
 const body_parser = require("body-parser");
 
+var allowCrossDomain = function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+};
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: false }));
+app.use(allowCrossDomain);
+var cors = require("cors");
+app.use(cors());
 // /session(post), /session/:sid(get), /session/:pid(get), /profile(post)
 
 app.post("/session", (req, res) => {

@@ -31,6 +31,7 @@ let pushProfile = function(req,res) {
 }
 
 let getProfile = function(req,res) {
+  // const resp = {}
   var client = new Client();
  client.connect(err => {
     if (err) {
@@ -45,6 +46,7 @@ let getProfile = function(req,res) {
   // console.log(resp)   
 }
 let getSession = function(req,res) {
+  const resp = {}
   var client = new Client();
  client.connect(err => {
     if (err) {
@@ -60,6 +62,7 @@ let getSession = function(req,res) {
 }
 
 async function getUserAverage(req,res) {
+  const resp = {}
   var client = new Client();
  client.connect(err => {
     if (err) {
@@ -80,6 +83,7 @@ async function getUserAverage(req,res) {
 }
 
 async function getUserAverageDate(req,res) {
+  const resp = {}
   var client = new Client();
  client.connect(err => {
     if (err) {
