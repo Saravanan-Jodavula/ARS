@@ -12,7 +12,7 @@ let pushSession = function(req,res) {
       }
     })
     client.query("insert into sessions(session_data, profile_id, sid, date, current) values ($1,$2,$3,$4,$5);",[req.body.session_data, req.body.profile_id, req.body.sid, req.body.date, req.body.current]).then(()=>client.end())
-    .then((response)=>{res.status(200).json({message: "Data entered"}); client.end()})
+    .then((response)=>{res.status(200).json({message: "Data entered"}); console.log(response); client.end()})
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
 
@@ -27,7 +27,7 @@ let pushSession = function(req,res) {
       }
     })
     client.query("update endpoint set link=$1 where id=url;",[req.body.link]).then(()=>client.end())
-    .then((response)=>{res.status(200).json({message: "Endpoint Changed"}); client.end()})
+    .then((response)=>{res.status(200).json({message: "Endpoint Changed"});  client.end()})
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
 
@@ -56,7 +56,7 @@ let pushProfile = function(req,res) {
     }
   })
   client.query("insert into profile(age, height, weight, disability_info, name, unique_id) values ($1,$2,$3,$4,$5,$6);",[req.body.age, req.body.height, req.body.weight, req.body.disability_info, req.body.name, req.body.unique_id])
-  .then((response)=>{res.status(200).json({message: "profile created"}); client.end()})
+  .then((response)=>{res.status(200).json({message: "profile created"}); console.log(response); client.end()})
   .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
 }
 
