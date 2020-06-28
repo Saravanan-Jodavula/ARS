@@ -122,13 +122,15 @@ async function getUserAverageDate(req,res) {
       console.log('connected')
     }
   })
-  await client.query("select avg(cast(session_data -> $1 as float)) from sessions where profile_id = $2 AND date = $3;",[req.params.leg, req.params.pid, req.params.date])
+  var daet = req.params.date.toString()
+  console.log(daet)
+  await client.query(`select avg(cast(session_data -> $1 as float)) from sessions where profile_id = $2 AND date = cast('${daet}' as date);`,[req.params.leg, req.params.pid])
   .then((response)=>{resp.userAverage = (response.rows[0].avg); })
-  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+  .catch((err)=>{resp.error = err; console.log(err); })   
   
-  await client.query("select avg(cast(session_data -> $1 as float)) from sessions where date = $2;",[req.params.leg, req.params.date])
+  await client.query(`select avg(cast(session_data -> $1 as float)) from sessions where date = cast('${daet}' as date);`,[req.params.leg])
   .then((response)=>{resp.totalAverage = (response.rows[0].avg); })
-  .catch((err)=>{res.status(400).json(err); console.log(err); })   
+  .catch((err)=>{resp.error = err; console.log(err); })   
   client.end();
   return resp
 }
