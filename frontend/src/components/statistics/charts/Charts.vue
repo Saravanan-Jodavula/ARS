@@ -1,0 +1,120 @@
+<template>
+  <div class="charts">
+    <div class="row">
+      <div class="flex md6 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('Left Hand 20 Instances')"
+        >
+          <va-chart :data="verticalBarChartData" type="vertical-bar"/>
+        </va-card>
+      </div>
+      <div class="flex md6 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('charts.horizontalBarChart')"
+        >
+          <va-chart :data="horizontalBarChartData" type="horizontal-bar"/>
+        </va-card>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="flex md12 xs12">
+        <va-card :title="$t('User Average Vs Total Average on a given Date')">
+          <br>
+          <form>
+            <vuestic-date-picker
+              v-model="value"
+              :config="{mode: 'time'}"
+              @on-change="triggerChange()"
+            />
+          </form>
+          <br>
+          <va-card
+            class="chart-widget"
+            :title="$t('charts.horizontalBarChart')"
+          >
+            <va-chart :data="horizontalBarChartData" type="horizontal-bar"/>
+          </va-card>
+        </va-card>
+      </div>
+
+    </div>
+    <div class="row">
+      <div class="flex md12 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('charts.lineChart')"
+        >
+          <va-chart :data="lineChartData" type="line"/>
+        </va-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="flex md6 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('Current User Vs All Users Average')"
+        >
+          <va-chart :data="pieChartData" type="pie"/>
+        </va-card>
+      </div>
+      <div class="flex md6 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('Current User vs All Users Average (Same Day)')"
+        >
+          <va-chart :data="donutChartData" type="donut"/>
+        </va-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="flex md12 xs12">
+        <va-card
+          class="chart-widget"
+          :title="$t('charts.bubbleChart')"
+        >
+          <va-chart :data="bubbleChartData" type="bubble"/>
+        </va-card>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { getLineChartData } from '../../../data/charts/LineChartData'
+import { getBubbleChartData } from '../../../data/charts/BubbleChartData'
+import { getPieChartData } from '../../../data/charts/PieChartData'
+import { getDonutChartData } from '../../../data/charts/DonutChartData'
+import { getVerticalBarChartData } from '../../../data/charts/VerticalBarChartData'
+import { getHorizontalBarChartData } from '../../../data/charts/HorizontalBarChartData'
+
+export default {
+  name: 'charts',
+  data () {
+    return {
+      bubbleChartData: getBubbleChartData(this.$themes),
+      lineChartData: getLineChartData(this.$themes),
+      pieChartData: getPieChartData(this.$themes),
+      donutChartData: getDonutChartData(this.$themes),
+      verticalBarChartData: getVerticalBarChartData(this.$themes),
+      horizontalBarChartData: getHorizontalBarChartData(this.$themes),
+    }
+  },
+  methods: {
+    refreshData () {
+      this.lineChartData = getLineChartData(this.$themes)
+    },
+  },
+}
+</script>
+
+<style lang="scss">
+.chart-widget {
+  .va-card__body {
+    height: 550px;
+  }
+}
+</style>
