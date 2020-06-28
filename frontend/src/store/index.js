@@ -78,6 +78,20 @@ const store = new Vuex.Store({
       state.globalMax.push(obj.totalMax)
       state.globalMin.push(obj.totalMin)
     },
+    logout (state, obj) {
+      state.pid = null
+      state.avgLabels = []
+      state.avgDataUsers = []
+      state.avgDataTotal = []
+      state.currentAvg = []
+      state.totalAvg = []
+      state.labelAverage = []
+      state.globalMax = []
+      state.globalMin = []
+      state.userMax = []
+      state.userMin = []
+      state.peakLabels = []
+    },
   },
 })
 

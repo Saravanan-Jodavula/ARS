@@ -20,6 +20,7 @@
         v-for="option in options"
         :key="option.name"
         :to="{name: option.redirectTo}"
+        v-on:click.native="fun(option.name)"
         class="profile-dropdown__item pt-1 pb-1 mt-2 mb-2"
       >
         {{ $t(`user.${option.name}`) }}
@@ -36,14 +37,18 @@ export default {
       isShown: false,
     }
   },
+  methods: {
+    fun: function (name) {
+      if (name === 'logout') {
+        this.$store.commit('logout')
+      }
+      this.$store.commit('logout')
+    },
+  },
   props: {
     options: {
       type: Array,
       default: () => [
-        {
-          name: 'profile',
-          redirectTo: '',
-        },
         {
           name: 'logout',
           redirectTo: 'login',
