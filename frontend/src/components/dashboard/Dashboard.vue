@@ -1,25 +1,14 @@
 <template>
-  <va-card>
-    <h1>Henlo</h1>
+  <va-card >
     <va-card
-      class="chart-widget"
       :title="$t('User Average vs Total Average')"
     >
-      <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
-    </va-card>
-    <br>
-    <va-card
-      class="chart-widget"
-      :title="$t('User Max vs Total Max')"
-    >
-      <va-chart :data="horizontalBarChartDataMax" type="horizontal-bar"/>
-    </va-card>
-    <br>
-    <va-card
-      class="chart-widget"
-      :title="$t('User Min vs Total Min')"
-    >
-      <va-chart :data="horizontalBarChartDataMin" type="horizontal-bar"/>
+      <va-button>
+        Start Session
+      </va-button>
+      <va-button color="danger">
+        End Session
+      </va-button>
     </va-card>
   </va-card>
 </template>
@@ -40,23 +29,6 @@ export default {
       pieChartData: getPieChartData(this.$themes),
       donutChartData: getDonutChartData(this.$themes),
       verticalBarChartData: getVerticalBarChartData(this.$themes),
-      horizontalBarChartDataAvg: {
-        labels: this.$store.state.avgLabels,
-        datasets: [
-          {
-            label: 'My Average',
-            backgroundColor: this.$themes.warning,
-            borderColor: 'transparent',
-            data: this.$store.state.avgDataUsers,
-          },
-          {
-            label: 'Total Average',
-            backgroundColor: this.$themes.danger,
-            borderColor: 'transparent',
-            data: this.$store.state.avgDataTotal,
-          },
-        ],
-      },
       horizontalBarChartDataMax: {
         labels: ['left-hand', 'right-hand', 'left-leg', 'right-leg'],
         datasets: [

@@ -4,38 +4,54 @@
       <div class="flex md6 xs12">
         <va-card
           class="chart-widget"
-          :title="$t('Left Hand 20 Instances')"
+          :title="$t('User Minimum vs Total Minimum')"
         >
-          <va-chart :data="verticalBarChartData" type="vertical-bar"/>
+          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
         <va-card
           class="chart-widget"
-          :title="$t('charts.horizontalBarChart')"
+          :title="$t('User average vs Total average')"
         >
-          <va-chart :data="horizontalBarChartData" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
         </va-card>
       </div>
 
     </div>
     <div class="row">
       <div class="flex md12 xs12">
-        <va-card :title="$t('User Average Vs Total Average on a given Date')">
-          <br>
-          <form>
-            <vuestic-date-picker
-              v-model="value"
-              :config="{mode: 'time'}"
-              @on-change="triggerChange()"
-            />
+        <va-card :title="$t(`${this.limb}`)">
+          <form @submit="gett">
+            <div class="row">
+              <div class="flex lg12 md12 sm12 xs12">
+                <va-select
+                  :label="$t('choose one of the following')"
+                  v-model="limb"
+                  :options="this.limbs"
+                />
+                <div class="flex lg6 md6 sm6 xs12">
+                  <va-button v-on:click="gett">
+                    Get details
+                  </va-button>
+                </div>
+              </div>
+            </div>
           </form>
-          <br>
+        </va-card>
+      </div>
+      <div class="flex md12 xs12">
+        <va-card :title="$t('Twenty Instances of current session')">
           <va-card
-            class="chart-widget"
-            :title="$t('charts.horizontalBarChart')"
+            v-if="twentyInstances"
           >
-            <va-chart :data="horizontalBarChartData" type="horizontal-bar"/>
+            <va-card
+              :title="$t('Left Hand 20 Instances')"
+            >
+              <div ref="myChart">
+                <va-chart :data="chartData" :key="sex" type="vertical-bar"/>
+              </div>
+            </va-card>
           </va-card>
         </va-card>
       </div>
@@ -64,19 +80,9 @@
       <div class="flex md6 xs12">
         <va-card
           class="chart-widget"
-          :title="$t('Current User vs All Users Average (Same Day)')"
+          :title="$t('User Maximum vs Total Maximum')"
         >
-          <va-chart :data="donutChartData" type="donut"/>
-        </va-card>
-      </div>
-    </div>
-    <div class="row">
-      <div class="flex md12 xs12">
-        <va-card
-          class="chart-widget"
-          :title="$t('charts.bubbleChart')"
-        >
-          <va-chart :data="bubbleChartData" type="bubble"/>
+          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
         </va-card>
       </div>
     </div>
@@ -84,28 +90,82 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { getLineChartData } from '../../../data/charts/LineChartData'
-import { getBubbleChartData } from '../../../data/charts/BubbleChartData'
 import { getPieChartData } from '../../../data/charts/PieChartData'
 import { getDonutChartData } from '../../../data/charts/DonutChartData'
-import { getVerticalBarChartData } from '../../../data/charts/VerticalBarChartData'
-import { getHorizontalBarChartData } from '../../../data/charts/HorizontalBarChartData'
 
 export default {
   name: 'charts',
   data () {
     return {
-      bubbleChartData: getBubbleChartData(this.$themes),
+      sex: true,
+      twentyInstances: false,
       lineChartData: getLineChartData(this.$themes),
       pieChartData: getPieChartData(this.$themes),
       donutChartData: getDonutChartData(this.$themes),
-      verticalBarChartData: getVerticalBarChartData(this.$themes),
-      horizontalBarChartData: getHorizontalBarChartData(this.$themes),
+      limbs: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+      limb: null,
+      verticalBarChartData: {
+        labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+        datasets: [
+          {
+            label: null,
+            backgroundColor: this.$themes.primary,
+            borderColor: 'transparent',
+            data: [],
+          },
+        ],
+      },
+      horizontalBarChartDataAvg: {
+        labels: this.$store.state.avgLabels,
+        datasets: [
+          {
+            label: 'User Data',
+            backgroundColor: this.$themes.warning,
+            borderColor: 'transparent',
+            data: this.$store.state.avgDataUsers,
+          },
+          {
+            label: 'Total Data',
+            backgroundColor: this.$themes.danger,
+            borderColor: 'transparent',
+            data: this.$store.state.avgDataTotal,
+          },
+        ],
+      },
+
     }
+  },
+  computed: {
+    chartData () {
+      return this.verticalBarChartData
+    },
   },
   methods: {
     refreshData () {
-      this.lineChartData = getLineChartData(this.$themes)
+      return this.verticalBarChartData
+    },
+    async gett () {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/currentsession/`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+          this.verticalBarChartData.datasets[0].data = []
+          console.log('array is,  ', this.verticalBarChartData.datasets[0].data)
+          var abc = [...response.data.data]
+          this.verticalBarChartData.datasets[0].label = this.limb
+          abc.forEach(element => {
+            console.log(element.session_data[`${this.limb}`])
+            this.verticalBarChartData.datasets[0].data.push(element.session_data[`${this.limb}`])
+          })
+        //  console.log(response.data.data)
+        })
+        .catch((err) => console.log(err))
+      this.twentyInstances = true
+      this.sex = !this.sex
     },
   },
 }
