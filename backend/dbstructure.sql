@@ -17,3 +17,9 @@ CREATE TABLE "profile" (
   "unique_id" varchar(20) UNIQUE
 );
 
+CREATE TABLE "endpoint" (
+  "id" varchar(50),
+  "link" varchar(50)
+)
+
+insert into endpoint(id, link) values ('url', 'localhost:3000');

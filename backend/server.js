@@ -67,6 +67,12 @@ app.get("/peakdata/:leg/:pid", (req, res) => {
   .catch((err)=>res.status(400).json(err))
 });
 
+app.post("/endpoint", (req, res) => {
+  dbQuery.updateEndpoint(req,res)
+});
+app.get("/endpoint", (req, res) => {
+  dbQuery.getEndpoint(req,res)
+});
 
 
 app.listen(port_number , function() {

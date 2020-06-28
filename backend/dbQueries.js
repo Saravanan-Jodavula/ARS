@@ -15,6 +15,36 @@ let pushSession = function(req,res) {
     .then((response)=>{res.status(200).json({message: "Data entered"}); client.end()})
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
+
+  let updateEndpoint = function(req,res) {
+    // var resp = {}
+    var client = new Client();
+   client.connect(err => {
+      if (err) {
+        console.error('connection error', err.stack)
+      } else {
+        console.log('connected')
+      }
+    })
+    client.query("update endpoint set link=$1 where id=url;",[req.body.link]).then(()=>client.end())
+    .then((response)=>{res.status(200).json({message: "Endpoint Changed"}); client.end()})
+    .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
+  }
+
+  let getEndpoint = function(req,res) {
+    // var resp = {}
+    var client = new Client();
+   client.connect(err => {
+      if (err) {
+        console.error('connection error', err.stack)
+      } else {
+        console.log('connected')
+      }
+    })
+    client.query("select * from endpoint where id=url;")
+    .then((response)=>{res.status(200).json({endpoint: response.rows}); client.end()})
+    .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
+  }
 let pushProfile = function(req,res) {
   // var resp = {}
   var client = new Client();
@@ -200,5 +230,7 @@ module.exports={
      endSession,
      currentVsAllAverage,
      getCurrentSession,
-     getPeakData
+     getPeakData,
+     updateEndpoint,
+     getEndpoint
   }
