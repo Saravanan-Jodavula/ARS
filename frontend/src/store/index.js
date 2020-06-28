@@ -25,6 +25,7 @@ const store = new Vuex.Store({
     globalMin: [],
     userMax: [],
     userMin: [],
+    peakLabels: [],
   },
   mutations: {
     login (state, obj) {
@@ -53,6 +54,29 @@ const store = new Vuex.Store({
       state.labelAverage.push('right-hand')
       state.currentAvg.push(obj.current_Average)
       state.totalAvg.push(obj.all_Time_Average)
+    },
+    leftLegPeak (state, obj) {
+      state.userMax.push(obj.userMax)
+      state.userMin.push(obj.userMin)
+      state.globalMax.push(obj.totalMax)
+      state.globalMin.push(obj.totalMin)
+    },
+    rightLegPeak (state, obj) {
+      state.userMax.push(obj.userMax)
+      state.userMin.push(obj.userMin)
+      state.globalMax.push(obj.totalMax)
+      state.globalMin.push(obj.totalMin)
+    },
+    leftHandPeak (state, obj) {
+      state.userMax.push(obj.userMax)
+      state.userMin.push(obj.userMin)
+      state.globalMax.push(obj.totalMax)
+      state.globalMin.push(obj.totalMin)
+    },
+    rightHandPeak (state, obj) {
+      state.userMax.push(obj.userMax)
+      state.globalMax.push(obj.totalMax)
+      state.globalMin.push(obj.totalMin)
     },
   },
 })

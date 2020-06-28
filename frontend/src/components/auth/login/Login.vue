@@ -123,10 +123,51 @@ export default {
           console.log('3 is', resp.data)
           this.$store.commit('rightHandAvg', resp.data)
         })
+        .catch((err) => console.log(err))
+
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/peakdata/left-leg/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          this.$store.commit('leftLegPeak', resp.data)
+        })
+        .catch((err) => console.log(err))
+
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/peakdata/right-leg/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          this.$store.commit('rightLegPeak', resp.data)
+        })
+        .catch((err) => console.log(err))
+
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/peakdata/left-hand/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          this.$store.commit('leftHandPeak', resp.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/peakdata/right-hand/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          this.$store.commit('rightHandPeak', resp.data)
+        })
         .then(() => this.$router.push({ name: 'dashboard' }))
         .catch((err) => console.log(err))
       console.log(objj)
+
       // this.$router.push({ name: 'dashboard' })
+
     },
   },
 }

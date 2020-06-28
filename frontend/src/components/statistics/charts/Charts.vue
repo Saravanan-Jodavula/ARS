@@ -6,7 +6,7 @@
           class="chart-widget"
           :title="$t('User Minimum vs Total Minimum')"
         >
-          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMin" type="horizontal-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -82,7 +82,7 @@
           class="chart-widget"
           :title="$t('User Maximum vs Total Maximum')"
         >
-          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMax" type="horizontal-bar"/>
         </va-card>
       </div>
     </div>
@@ -148,7 +148,40 @@ export default {
           },
         ],
       },
-
+      horizontalBarChartDataMin: {
+        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        datasets: [
+          {
+            label: 'User Data',
+            backgroundColor: this.$themes.warning,
+            borderColor: 'transparent',
+            data: this.$store.state.userMin,
+          },
+          {
+            label: 'Total Data',
+            backgroundColor: this.$themes.danger,
+            borderColor: 'transparent',
+            data: this.$store.state.globalMin,
+          },
+        ],
+      },
+      horizontalBarChartDataMax: {
+        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        datasets: [
+          {
+            label: 'User Data',
+            backgroundColor: this.$themes.warning,
+            borderColor: 'transparent',
+            data: this.$store.state.userMax,
+          },
+          {
+            label: 'Total Data',
+            backgroundColor: this.$themes.danger,
+            borderColor: 'transparent',
+            data: this.$store.state.globalMax,
+          },
+        ],
+      },
     }
   },
   computed: {
