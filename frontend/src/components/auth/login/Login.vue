@@ -84,7 +84,47 @@ export default {
         })
         .catch((err) => console.log(err))
         .then(() => this.$store.commit('login', objj))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/currentvsall/left-leg/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          console.log('3 is', resp.data)
+          this.$store.commit('leftLegAvg', resp.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/currentvsall/right-leg/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          console.log('3 is', resp.data)
+          this.$store.commit('rightLegAvg', resp.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/currentvsall/left-hand/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          console.log('3 is', resp.data)
+          this.$store.commit('leftHandAvg', resp.data)
+        })
+        .catch((err) => console.log(err))
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/currentvsall/right-hand/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          console.log('3 is', resp.data)
+          this.$store.commit('rightHandAvg', resp.data)
+        })
         .then(() => this.$router.push({ name: 'dashboard' }))
+        .catch((err) => console.log(err))
       console.log(objj)
       // this.$router.push({ name: 'dashboard' })
     },

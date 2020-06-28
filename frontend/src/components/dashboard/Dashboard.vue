@@ -16,18 +16,15 @@
 <script>
 import { getLineChartData } from '../../data/charts/LineChartData'
 import { getPieChartData } from '../../data/charts/PieChartData'
-import { getDonutChartData } from '../../data/charts/DonutChartData'
 import { getVerticalBarChartData } from '../../data/charts/VerticalBarChartData'
 
 export default {
   name: 'charts',
-  mounted () {
-    this.$forceUpdate()
+  beforeCreate () {
   },
   data () {
     return {
       pieChartData: getPieChartData(this.$themes),
-      donutChartData: getDonutChartData(this.$themes),
       verticalBarChartData: getVerticalBarChartData(this.$themes),
       horizontalBarChartDataMax: {
         labels: ['left-hand', 'right-hand', 'left-leg', 'right-leg'],

@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VuexI18n from 'vuex-i18n' // load vuex i18n module
 import app from './modules/app'
-import axios from 'axios'
 
 import * as getters from './getters'
 
@@ -19,6 +18,13 @@ const store = new Vuex.Store({
     avgLabels: [],
     avgDataUsers: [],
     avgDataTotal: [],
+    currentAvg: [],
+    totalAvg: [],
+    labelAverage: [],
+    globalMax: [],
+    globalMin: [],
+    userMax: [],
+    userMin: [],
   },
   mutations: {
     login (state, obj) {
@@ -27,6 +33,26 @@ const store = new Vuex.Store({
       state.pid = obj.pid
       state.avgLabels = obj.avgLabels
       console.log(state)
+    },
+    leftLegAvg (state, obj) {
+      state.labelAverage.push('left-leg')
+      state.currentAvg.push(obj.current_Average)
+      state.totalAvg.push(obj.all_Time_Average)
+    },
+    rightLegAvg (state, obj) {
+      state.labelAverage.push('right-leg')
+      state.currentAvg.push(obj.current_Average)
+      state.totalAvg.push(obj.all_Time_Average)
+    },
+    leftHandAvg (state, obj) {
+      state.labelAverage.push('left-hand')
+      state.currentAvg.push(obj.current_Average)
+      state.totalAvg.push(obj.all_Time_Average)
+    },
+    rightHandAvg (state, obj) {
+      state.labelAverage.push('right-hand')
+      state.currentAvg.push(obj.current_Average)
+      state.totalAvg.push(obj.all_Time_Average)
     },
   },
 })

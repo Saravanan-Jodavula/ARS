@@ -31,7 +31,7 @@
                   :options="this.limbs"
                 />
                 <div class="flex lg6 md6 sm6 xs12">
-                  <va-button v-on:click="gett">
+                  <va-button @click.prevent="gett">
                     Get details
                   </va-button>
                 </div>
@@ -74,7 +74,7 @@
           class="chart-widget"
           :title="$t('Current User Vs All Users Average')"
         >
-          <va-chart :data="pieChartData" type="pie"/>
+          <va-chart :data="verticalBarChartDataAvg" :key="sex" type="vertical-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -92,8 +92,6 @@
 <script>
 import axios from 'axios'
 import { getLineChartData } from '../../../data/charts/LineChartData'
-import { getPieChartData } from '../../../data/charts/PieChartData'
-import { getDonutChartData } from '../../../data/charts/DonutChartData'
 
 export default {
   name: 'charts',
@@ -102,8 +100,7 @@ export default {
       sex: true,
       twentyInstances: false,
       lineChartData: getLineChartData(this.$themes),
-      pieChartData: getPieChartData(this.$themes),
-      donutChartData: getDonutChartData(this.$themes),
+
       limbs: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
       limb: null,
       verticalBarChartData: {
@@ -114,6 +111,23 @@ export default {
             backgroundColor: this.$themes.primary,
             borderColor: 'transparent',
             data: [],
+          },
+        ],
+      },
+      verticalBarChartDataAvg: {
+        labels: this.$store.state.labelAverage,
+        datasets: [
+          {
+            label: 'current average',
+            backgroundColor: this.$themes.primary,
+            borderColor: 'transparent',
+            data: this.$store.state.currentAvg,
+          },
+          {
+            label: 'All time average',
+            backgroundColor: this.$themes.danger,
+            borderColor: 'transparent',
+            data: this.$store.state.totalAvg,
           },
         ],
       },
