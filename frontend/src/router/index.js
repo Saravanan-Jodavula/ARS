@@ -10,7 +10,7 @@ const EmptyParentComponent = {
 }
 
 const demoRoutes = []
-
+console.log('URL IS', process.env.VUE_APP_BACKEND_URL)
 export default new Router({
   mode: process.env.VUE_APP_ROUTER_MODE_HISTORY === 'true' ? 'history' : 'hash',
   routes: [
