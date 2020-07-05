@@ -6,7 +6,14 @@
       :error="!!emailErrors.length"
       :error-messages="emailErrors"
     />
-    <p class="d-flex justify--center mt-3" >Loading, Please Wait</p>
+    <p v-if="loader" class="d-flex justify--center mt-3" >It might take a while to load, please wait.... <component
+      class="d-flex justify--center"
+      :animation-duration="1000"
+      :is="HollowDotsSpinner"
+      :color="this.$themes.primary"
+      size="80"
+    >
+    </component></p>
     <div class="d-flex justify--center mt-3">
       <va-button type="submit" class="my-0">{{ $t('auth.login') }}</va-button>
     </div>
@@ -15,6 +22,7 @@
 
 <script>
 import axios from 'axios'
+import { HollowDotsSpinner } from 'epic-spinners'
 export default {
   name: 'login',
   data () {
@@ -24,11 +32,14 @@ export default {
       keepLoggedIn: false,
       emailErrors: [],
       passwordErrors: [],
+      loader: false,
+      HollowDotsSpinner: HollowDotsSpinner,
     }
   },
 
   methods: {
     async onsubmit () {
+      this.loader = true
       var objj = {
         pid: this.pid,
         avgLabels: [],

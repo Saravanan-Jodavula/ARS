@@ -2,10 +2,9 @@
   <div class="auth-layout row align-content--center">
     <div class="flex xs12 pa-3 flex-center">
       <router-link class="py-5 flex-center" to="/">
-        <va-icon-vuestic />
+        <img src="https://adityamehtafoundation.org/wp-content/uploads/2015/05/AM-Logo-for-website-3.jpg">
       </router-link>
     </div>
-
     <div class="flex xs12 pa-3">
       <div class="d-flex justify--center">
         <va-card class="auth-layout__card">
@@ -28,7 +27,6 @@
 </template>
 
 <script>
-import VaIconVuestic from '../../iconset/VaIconVuestic'
 
 const tabs = [
   'login',
@@ -37,7 +35,6 @@ const tabs = [
 
 export default {
   name: 'AuthLayout',
-  components: { VaIconVuestic },
   data () {
     return {
       selectedTabIndex: 0,
