@@ -151,7 +151,7 @@ export default {
           },
         ],
       },
-      verticalBarChartDataAvg: {
+      verticalBarChartDataAvgs: {
         // labels: this.$store.state.labelAverage,
         labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
@@ -169,7 +169,7 @@ export default {
           },
         ],
       },
-      horizontalBarChartDataAvg: {
+      horizontalBarChartDataAvgs: {
         labels: this.$store.state.avgLabels,
         datasets: [
           {
@@ -186,7 +186,7 @@ export default {
           },
         ],
       },
-      horizontalBarChartDataMin: {
+      horizontalBarChartDataMins: {
         labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
@@ -203,7 +203,7 @@ export default {
           },
         ],
       },
-      horizontalBarChartDataMax: {
+      horizontalBarChartDataMaxs: {
         labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
@@ -229,10 +229,23 @@ export default {
     refresh () {
       return this.pageRefresh
     },
+    horizontalBarChartDataAvg () {
+      return this.horizontalBarChartDataAvgs
+    },
+    verticalBarChartDataAvg () {
+      return this.verticalBarChartDataAvgs
+    },
+    horizontalBarChartDataMin () {
+      return this.horizontalBarChartDataMins
+    },
+    horizontalBarChartDataMax () {
+      return this.horizontalBarChartDataMaxs
+    },
   },
   mounted () {
     this.pageRefresh = !this.pageRefresh
-    console.log(this.$store.state)
+    // this.$refs.chartz.forceUpdate()
+    // console.log(this.$refs)
   },
   methods: {
     refreshData () {
