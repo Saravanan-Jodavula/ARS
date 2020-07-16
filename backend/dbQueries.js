@@ -16,6 +16,31 @@ let pushSession = function(req,res) {
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
 
+  let login = function(req,res) {
+    // var resp = {}
+    var client = new Client();
+   client.connect(err => {
+      if (err) {
+        console.error('connection error', err.stack)
+      } else {
+        console.log('connected')
+      }
+    })
+    client.query("select * from adminuser where username=$1;",[req.body.username])
+    .then((response)=>{
+      if(response.rows[0].password === req.body.password) {
+      res.status(200).json({isLoggedin: true}); 
+      console.log(response);
+       client.end()
+      } 
+      else {
+        res.status(400).json({isLoggedin: false, message: "wrong creds"})
+        client.end()
+      }
+    })
+    .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
+  }
+
   let updateEndpoint = function(req,res) {
     // var resp = {}
     var client = new Client();
@@ -174,7 +199,7 @@ async function currentVsAllAverage(req,res) {
   return resp
 }
 
-async function getCurrentSession(req,res) {
+async function getCurrentSession() {
   const resp = {}
   var client = new Client();
  client.connect(err => {
@@ -185,10 +210,63 @@ async function getCurrentSession(req,res) {
     }
   })
   await client.query("select * from sessions where current = true;")
-  .then((response)=>{resp.data = response.rows; console.log(response.rows)})
+  .then((response)=>{resp.data = response.rows;})
   .catch((err)=>{resp.error = err; console.log(err); })   
   client.end();
   return resp
+}
+async function getCurrentSessionLive(socket) {
+  const resp = {}
+  var obj = {
+    updateEndpoint : [],
+    lowerQuadrant: [],
+    sideways: [],
+    diagonal: []
+  }
+  var client = new Client();
+ client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+  await client.query("select * from sessions where current = true;")
+  .then((response)=>{resp.data = response.rows;})
+  .catch((err)=>{resp.error = err; console.log(err); })   
+  client.end();
+  // console.log(socket)
+  var upperQuadrant = []
+  var lowerQuadrant =[]
+  var sideways =[]
+  var diagonal =[]
+  var one = []
+  var two = []
+  var three = []
+  var four = []
+  var five = []
+  var six = []
+  var seven = []
+  var eight = []
+  var nine = []
+  var ten = []
+  resp.data.forEach(element => {
+    upperQuadrant.push(element.session_data["left-leg"])
+    lowerQuadrant.push(element.session_data["right-leg"])
+    sideways.push(element.session_data["left-hand"])
+    diagonal.push(element.session_data["right-hand"])
+    one.push(element.session_data["one"])
+    two.push(element.session_data["two"])
+    three.push(element.session_data["three"])
+    four.push(element.session_data["four"])
+    five.push(element.session_data["five"])
+    six.push(element.session_data["six"])
+    seven.push(element.session_data["seven"])
+    eight.push(element.session_data["eight"])
+    nine.push(element.session_data["nine"])
+    ten.push(element.session_data["ten"])
+  });
+  return {upperQuadrant: upperQuadrant,lowerQuadrant: lowerQuadrant,sideways: sideways,diagonal: diagonal}
 }
 
 async function getPeakData(req,res) {
@@ -232,7 +310,9 @@ module.exports={
      endSession,
      currentVsAllAverage,
      getCurrentSession,
+     getCurrentSessionLive,
      getPeakData,
      updateEndpoint,
-     getEndpoint
+     getEndpoint,
+     login
   }

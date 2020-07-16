@@ -3,6 +3,7 @@ const port_number = process.env.PORT || 8000; //PORT SPECIFIED IN THE .env file
 const app = express();
 dbQuery = require('./dbQueries')
 const body_parser = require("body-parser");
+// const io = require("socket.io")(server);
 
 var allowCrossDomain = function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -10,6 +11,34 @@ var allowCrossDomain = function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 };
+
+const server = app.listen(port_number , function() {
+    console.log('Express server listening on port ', port_number);
+  })
+
+const io = require("socket.io")(server, {
+  handlePreflightRequest: (req, res) => {
+      const headers = {
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Allow-Origin": "*", //or the specific origin you want to give access to,
+          "Access-Control-Allow-Credentials": true
+      };
+      res.writeHead(200, headers);
+      res.end();
+  }
+});
+
+
+
+io.on("connection", socket => {
+  setInterval(() => {
+    dbQuery.getCurrentSessionLive(socket)
+    .then((resp)=>socket.broadcast.emit("newdata", resp))
+    .catch((err)=>console.log(err))
+    // var i = 0
+    // socket.broadcast.emit("newdata", ++i)
+  }, 5000)
+});
 
 app.use(body_parser.json());
 app.use(body_parser.urlencoded({ extended: false }));
@@ -20,6 +49,9 @@ app.use(cors());
 
 app.post("/session", (req, res) => {
     dbQuery.pushSession(req, res)
+  });
+app.post("/login", (req, res) => {
+    dbQuery.login(req, res)
   });
 app.post("/profile", (req, res) => {
       dbQuery.pushProfile(req,res)
@@ -75,6 +107,3 @@ app.get("/endpoint", (req, res) => {
 });
 
 
-app.listen(port_number , function() {
-    console.log('Express server listening on port ', port_number);
-  })

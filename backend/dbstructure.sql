@@ -20,6 +20,13 @@ CREATE TABLE "profile" (
 CREATE TABLE "endpoint" (
   "id" varchar(50),
   "link" varchar(50)
-)
+);
 
+
+CREATE TABLE "adminuser" (
+  "username" varchar(50),
+  "password" varchar(50)
+);
+
+insert into adminuser(username, password) values ('saravanan@codingstudio.club', '1234');
 insert into endpoint(id, link) values ('url', 'localhost:3000');
