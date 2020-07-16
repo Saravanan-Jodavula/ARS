@@ -40,6 +40,12 @@ export default new Router({
       component: AppLayout,
       children: [
         {
+          name: 'profileselect',
+          path: 'profileselect',
+          component: () => import('../components/profileselect/ProfileSelect.vue'),
+          default: true,
+        },
+        {
           name: 'dashboard',
           path: 'dashboard',
           component: () => import('../components/dashboard/Dashboard.vue'),
@@ -49,6 +55,12 @@ export default new Router({
           name: 'charts',
           path: 'charts',
           component: () => import('../components/statistics/charts/Charts.vue'),
+          default: true,
+        },
+        {
+          name: 'liveData',
+          path: 'live',
+          component: () => import('../components/live/LiveData.vue'),
           default: true,
         },
       ],

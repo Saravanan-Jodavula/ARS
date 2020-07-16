@@ -1,12 +1,12 @@
 <template>
-  <div class="charts">
+  <div class="charts" :key="refresh">
     <div class="row">
       <div class="flex md6 xs12">
         <va-card
           class="chart-widget"
           :title="$t('User Minimum vs Total Minimum')"
         >
-          <va-chart :data="horizontalBarChartDataMin" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMin" :key="refresh" type="horizontal-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -14,7 +14,7 @@
           class="chart-widget"
           :title="$t('User average vs Total average')"
         >
-          <va-chart :data="horizontalBarChartDataAvg" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataAvg" :key="refresh" type="horizontal-bar"/>
         </va-card>
       </div>
 
@@ -100,7 +100,7 @@
           class="chart-widget"
           :title="$t('User Maximum vs Total Maximum')"
         >
-          <va-chart :data="horizontalBarChartDataMax" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMax" :key="refresh" type="horizontal-bar"/>
         </va-card>
       </div>
     </div>
@@ -115,12 +115,13 @@ export default {
   data () {
     return {
       date: null,
+      pageRefresh: false,
       instanceFlag: true,
       instanceFlag2: true,
       dateFlag: false,
       twentyInstances: false,
       lineChartData: {
-        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
             label: 'global data',
@@ -137,7 +138,7 @@ export default {
         ],
       },
 
-      limbs: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+      limbs: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
       limb: null,
       verticalBarChartData: {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
@@ -151,7 +152,8 @@ export default {
         ],
       },
       verticalBarChartDataAvg: {
-        labels: this.$store.state.labelAverage,
+        // labels: this.$store.state.labelAverage,
+        labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
             label: 'current average',
@@ -185,7 +187,7 @@ export default {
         ],
       },
       horizontalBarChartDataMin: {
-        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
             label: 'User Data',
@@ -202,7 +204,7 @@ export default {
         ],
       },
       horizontalBarChartDataMax: {
-        labels: ['left-leg', 'right-leg', 'left-hand', 'right-hand'],
+        labels: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
         datasets: [
           {
             label: 'User Data',
@@ -224,6 +226,13 @@ export default {
     chartData () {
       return this.verticalBarChartData
     },
+    refresh () {
+      return this.pageRefresh
+    },
+  },
+  mounted () {
+    this.pageRefresh = !this.pageRefresh
+    console.log(this.$store.state)
   },
   methods: {
     refreshData () {
@@ -251,7 +260,7 @@ export default {
       this.instanceFlag = !this.instanceFlag
     },
     async gett2 () {
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-leg/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/upper-quadrant/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -262,7 +271,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-leg/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/lower-quadrant/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -273,7 +282,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-hand/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/sideways/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -284,7 +293,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-hand/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/diagonal/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
