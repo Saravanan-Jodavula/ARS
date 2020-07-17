@@ -11,10 +11,8 @@ var allowCrossDomain = function (req, res, next) {
   res.header("Access-Control-Allow-Headers", "Content-Type");
   next();
 };
+const server = require('http').createServer(app);
 
-const server = app.listen(port_number , function() {
-    console.log('Express server listening on port ', port_number);
-  })
 
 const io = require("socket.io")(server, {
   handlePreflightRequest: (req, res) => {
@@ -107,3 +105,6 @@ app.get("/endpoint", (req, res) => {
 });
 
 
+server.listen(port_number , function() {
+  console.log('Express server listening on port ', port_number);
+})
