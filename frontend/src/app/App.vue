@@ -5,6 +5,9 @@
 </template>
 
 <script>
+import io from 'socket.io-client'
+// eslint-disable-next-line no-unused-vars
+const socket = io.connect('http://localhost:8000')
 export default {
   name: 'app',
   data () {

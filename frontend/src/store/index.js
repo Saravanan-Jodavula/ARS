@@ -8,7 +8,7 @@ import * as getters from './getters'
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
-  strict: true, // process.env.NODE_ENV !== 'production',
+  strict: false, // process.env.NODE_ENV !== 'production',
   getters,
   modules: {
     app,
@@ -26,8 +26,44 @@ const store = new Vuex.Store({
     userMax: [],
     userMin: [],
     peakLabels: [],
+    twentyInstances: false,
+    instanceFlag: false,
+    refresh: false,
+    refresh1: false,
+    refresh2: false,
+    refresh3: false,
   },
   mutations: {
+    flushState (state) {
+      console.log('flushing....')
+      state.pid = null
+      state.avgLabels = []
+      state.avgDataUsers = []
+      state.avgDataTotal = []
+      state.currentAvg = []
+      state.totalAvg = []
+      state.labelAverage = []
+      state.globalMax = []
+      state.globalMin = []
+      state.userMax = []
+      state.userMin = []
+      state.peakLabels = []
+      state.twentyInstances = false
+      state.instanceFlag = false
+      state.refresh = false
+      state.refresh1 = false
+      state.refresh2 = false
+      state.refresh3 = false
+      console.log('flushed state is', state)
+    },
+    relod (state) {
+      state.twentyInstances = !state.twentyInstances
+      state.instanceFlag = !state.instanceFlag
+      state.refresh = !state.refresh
+      state.refresh1 = !state.refresh1
+      state.refresh2 = !state.refresh2
+      state.refresh3 = !state.refresh3
+    },
     login (state, obj) {
       state.avgDataTotal = obj.avgDataTotal
       state.avgDataUsers = obj.avgDataUsers

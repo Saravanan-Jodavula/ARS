@@ -41,6 +41,10 @@ export default {
     loaderFalse () {
       this.loader = false
     },
+    refreshState () {
+      console.log(0)
+      this.$store.commit('flushState')
+    },
     async onsubmit () {
       this.loader = true
       var objj = {
@@ -49,6 +53,7 @@ export default {
         avgDataUsers: [],
         avgDataTotal: [],
       }
+      await this.refreshState()
       await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-hand/${this.pid}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',

@@ -57,16 +57,18 @@ export default {
       flag: false,
     }
   },
+  created () {
+    console.log('created')
+    let len = 0
+    socket.on('newdata', fetchedData => {
+      if (fetchedData.upperQuadrant.length > len) {
+        len = fetchedData.upperQuadrant.length
+        this.fillData(fetchedData)
+      }
+    })
+  },
   methods: {
-    getRealtimeData () {
-      let len = 0
-      socket.on('newdata', fetchedData => {
-        if (fetchedData.upperQuadrant.length > len) {
-          len = fetchedData.upperQuadrant.length
-          this.fillData(fetchedData)
-        }
-      })
-    },
+
     fillData (fetchedData) {
       this.upperQuadrant = fetchedData.upperQuadrant
       this.lowerQuadrant = fetchedData.lowerQuadrant
@@ -75,9 +77,6 @@ export default {
       this.flag = !this.flag
       console.log('hi', fetchedData)
     },
-  },
-  beforeMount () {
-    this.getRealtimeData()
   },
 }
 </script>

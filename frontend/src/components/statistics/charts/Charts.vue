@@ -1,12 +1,12 @@
 <template>
-  <div class="charts" :key="refresh">
+  <div class="charts">
     <div class="row">
       <div class="flex md6 xs12">
         <va-card
           class="chart-widget"
           :title="$t('User Minimum vs Total Minimum')"
         >
-          <va-chart :data="horizontalBarChartDataMin" :key="refresh" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMin" :key="this.$store.state.refresh2" type="horizontal-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -14,7 +14,7 @@
           class="chart-widget"
           :title="$t('User average vs Total average')"
         >
-          <va-chart :data="horizontalBarChartDataAvg" :key="refresh" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataAvg" :key="this.$store.state.refresh3" type="horizontal-bar"/>
         </va-card>
       </div>
 
@@ -92,7 +92,7 @@
           class="chart-widget"
           :title="$t('Current User Vs All Users Average')"
         >
-          <va-chart :data="verticalBarChartDataAvg" :key="instanceFlag" type="vertical-bar"/>
+          <va-chart :data="verticalBarChartDataAvg" :key="this.$store.state.instanceFlag" type="vertical-bar"/>
         </va-card>
       </div>
       <div class="flex md6 xs12">
@@ -100,7 +100,7 @@
           class="chart-widget"
           :title="$t('User Maximum vs Total Maximum')"
         >
-          <va-chart :data="horizontalBarChartDataMax" :key="refresh" type="horizontal-bar"/>
+          <va-chart :data="horizontalBarChartDataMax" :key="this.$store.state.refresh" type="horizontal-bar"/>
         </va-card>
       </div>
     </div>
@@ -115,6 +115,10 @@ export default {
   data () {
     return {
       date: null,
+      refresh: false,
+      refresh1: false,
+      refresh2: false,
+      refresh3: false,
       pageRefresh: false,
       instanceFlag: true,
       instanceFlag2: true,
@@ -226,9 +230,6 @@ export default {
     chartData () {
       return this.verticalBarChartData
     },
-    refresh () {
-      return this.pageRefresh
-    },
     horizontalBarChartDataAvg () {
       return this.horizontalBarChartDataAvgs
     },
@@ -242,10 +243,8 @@ export default {
       return this.horizontalBarChartDataMaxs
     },
   },
-  mounted () {
-    this.pageRefresh = !this.pageRefresh
-    // this.$refs.chartz.forceUpdate()
-    // console.log(this.$refs)
+  beforeCreate () {
+    this.$store.commit('relod')
   },
   methods: {
     refreshData () {
@@ -271,6 +270,9 @@ export default {
         .catch((err) => console.log(err))
       this.twentyInstances = true
       this.instanceFlag = !this.instanceFlag
+      this.refresh1 = !this.refresh1
+      this.refresh2 = !this.refresh2
+      this.refresh3 = !this.refresh3
     },
     async gett2 () {
       await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/upper-quadrant/${this.$store.state.pid}/${this.date}:`, {
@@ -319,6 +321,9 @@ export default {
         .catch((err) => console.log(err))
       this.dateFlag = true
       this.instanceFlag2 = !this.instanceFlag
+      this.refresh1 = !this.refresh1
+      this.refresh2 = !this.refresh2
+      this.refresh3 = !this.refresh3
     },
   },
 }
