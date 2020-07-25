@@ -38,32 +38,55 @@ export default new Router({
       name: 'Admin',
       path: '/admin',
       component: AppLayout,
+      meta: {
+        requiresAuth: true,
+      },
       children: [
         {
           name: 'profileselect',
           path: 'profileselect',
           component: () => import('../components/profileselect/ProfileSelect.vue'),
           default: true,
+          meta: {
+            requiresAuth: true,
+          },
         },
         {
           name: 'dashboard',
           path: 'dashboard',
           component: () => import('../components/dashboard/Dashboard.vue'),
           default: true,
+          meta: {
+            requiresAuth: true,
+          },
         },
         {
           name: 'charts',
           path: 'charts',
           component: () => import('../components/statistics/charts/Charts.vue'),
           default: true,
+          meta: {
+            requiresAuth: true,
+          },
         },
         {
           name: 'liveData',
           path: 'live',
           component: () => import('../components/live/LiveData.vue'),
           default: true,
+          meta: {
+            requiresAuth: true,
+          },
         },
       ],
     },
   ],
 })
+
+// Router.beforeEach((to, from, next) => {
+//   if (localStorage.getItem('ars') === null && to.meta.requiresAuth) {
+//     next({ path: '/auth/login', params: { nextUrl: to.fullPath } })
+//   } else {
+//     next({ name: 'login' })
+//   }
+// })

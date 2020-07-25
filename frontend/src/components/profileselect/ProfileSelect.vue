@@ -1,23 +1,51 @@
 <template>
-  <form @submit.prevent="onsubmit">
-    <va-input
-      v-model="pid"
-      :label="$t('Profile ID')"
-      :error="!!emailErrors.length"
-      :error-messages="emailErrors"
-    />
-    <p v-if="loaderComp" class="d-flex justify--center mt-3" >It might take a while to load, please wait.... <component
-      class="d-flex justify--center"
-      :animation-duration="1000"
-      :is="HollowDotsSpinner"
-      :color="this.$themes.primary"
-      size="80"
-    >
-    </component></p>
-    <div class="d-flex justify--center mt-3">
-      <va-button type="submit" class="my-0">{{ $t('Get Profile') }}</va-button>
-    </div>
-  </form>
+  <div>
+    <va-card>
+      <form @submit.prevent="onsubmit">
+        <va-input
+          v-model="pid"
+          :label="$t('Profile ID')"
+          :error="!!emailErrors.length"
+          :error-messages="emailErrors"
+        />
+        <p v-if="loaderComp" class="d-flex justify--center mt-3" >It might take a while to load, please wait.... <component
+          class="d-flex justify--center"
+          :animation-duration="1000"
+          :is="HollowDotsSpinner"
+          :color="this.$themes.primary"
+          size="80"
+        >
+        </component></p>
+        <div class="d-flex justify--center mt-3">
+          <va-button type="submit" class="my-0">{{ $t('Get Profile') }}</va-button>
+        </div>
+      </form>
+    </va-card>
+    <br />
+    <va-card v-if="detailsFlag" :title="$t('Profile Details')">
+      <div class="flex row mt-2 pa-2">
+        <div class="col-md-4 col-lg-4">
+          <h1>Profile ID: {{this.$store.state.pid}}</h1>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <h1 style="text-align: center;">Age: {{this.$store.state.age}}</h1>
+        </div>
+        <div class="col-md-4 col-lg-4" >
+          <h1 style="text-align: center;">Height: {{this.$store.state.height}}</h1>
+        </div>
+      </div>
+      <br />
+      <div class="flex row pa-2">
+        <div class="col-md-4 col-lg-4">
+          <h1 style="text-align: left;">weight: {{this.$store.state.weight}}</h1>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <h1>Disability Info:</h1>
+          <p v-for="i in this.$store.state.disability_info" :key="i">{{i}}</p>
+        </div>
+      </div>
+    </va-card>
+  </div>
 </template>
 
 <script>
@@ -28,8 +56,10 @@ export default {
   data () {
     return {
       pid: null,
+      get_pid: null,
       password: '',
       keepLoggedIn: false,
+      detailsFlag: false,
       emailErrors: [],
       passwordErrors: [],
       loader: false,
@@ -54,6 +84,18 @@ export default {
         avgDataTotal: [],
       }
       await this.refreshState()
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/profile/${this.pid}`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => {
+          console.log('-1')
+          // console.log(resp.data[0])
+          this.$store.commit('profileDetails', resp.data[0])
+        })
+        .catch((err) => console.log(err))
+      this.detailsFlag = true
       await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-hand/${this.pid}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',

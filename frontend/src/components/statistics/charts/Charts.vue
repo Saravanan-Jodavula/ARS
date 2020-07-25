@@ -2,6 +2,10 @@
   <div class="charts">
     <div class="row">
       <div class="flex md6 xs12">
+        <va-card :title="$t('Standard Deviation')">
+          <h1 class="pa-2">Standard Deviation Of current user is, {{standardDeviation}}</h1>
+        </va-card>
+        <br>
         <va-card
           class="chart-widget"
           :title="$t('User Minimum vs Total Minimum')"
@@ -230,6 +234,9 @@ export default {
     chartData () {
       return this.verticalBarChartData
     },
+    standardDeviation () {
+      return this.getStandardDeviation(this.$store.state.currentAvg)
+    },
     horizontalBarChartDataAvg () {
       return this.horizontalBarChartDataAvgs
     },
@@ -247,6 +254,12 @@ export default {
     this.$store.commit('relod')
   },
   methods: {
+    getStandardDeviation (array) {
+      console.log(`standard deviation is,${array}`)
+      const n = array.length
+      const mean = array.reduce((a, b) => a + b) / n
+      return Math.sqrt(array.map(x => Math.pow(x - mean, 2)).reduce((a, b) => a + b) / n)
+    },
     refreshData () {
       return this.verticalBarChartData
     },

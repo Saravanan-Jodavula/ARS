@@ -15,6 +15,10 @@ const store = new Vuex.Store({
   },
   state: {
     pid: null,
+    age: 24,
+    height: 5,
+    weight: 57,
+    disability_info: {},
     avgLabels: [],
     avgDataUsers: [],
     avgDataTotal: [],
@@ -127,6 +131,13 @@ const store = new Vuex.Store({
       state.userMax = []
       state.userMin = []
       state.peakLabels = []
+    },
+    profileDetails (state, obj) {
+      state.pid = obj.profile_id
+      state.age = obj.age
+      state.weight = obj.weight
+      state.height = obj.height
+      state.disability_info = obj.disability_info
     },
   },
 })
