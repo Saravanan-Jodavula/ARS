@@ -147,6 +147,7 @@ export default {
       },
 
       limbs: ['upper-quadrant', 'lower-quadrant', 'sideways', 'diagonal'],
+      convertArray: { 'upper-quadrant': 'left-leg', 'lower-quadrant': 'left-hand', sideways: 'right-leg', diagonal: 'right-hand' },
       limb: null,
       verticalBarChartData: {
         labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
@@ -270,13 +271,14 @@ export default {
         },
       })
         .then((response) => {
+          console.log('data is: ' + JSON.stringify(response.data.data))
           this.verticalBarChartData.datasets[0].data = []
           console.log('array is,  ', this.verticalBarChartData.datasets[0].data)
           var abc = [...response.data.data]
           this.verticalBarChartData.datasets[0].label = this.limb
           abc.forEach(element => {
             console.log(element.session_data[`${this.limb}`])
-            this.verticalBarChartData.datasets[0].data.push(element.session_data[`${this.limb}`])
+            this.verticalBarChartData.datasets[0].data.push(element.session_data[`${this.convertArray[this.limb]}`])
           })
         //  console.log(response.data.data)
         })
@@ -288,7 +290,7 @@ export default {
       this.refresh3 = !this.refresh3
     },
     async gett2 () {
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/upper-quadrant/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-leg/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -299,7 +301,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/lower-quadrant/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/left-hand/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -310,7 +312,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/sideways/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-leg/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
@@ -321,7 +323,7 @@ export default {
           console.log(response.data)
         })
         .catch((err) => console.log(err))
-      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/diagonal/${this.$store.state.pid}/${this.date}:`, {
+      await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/usersavg/right-hand/${this.$store.state.pid}/${this.date}:`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },

@@ -85,7 +85,7 @@ export default {
           'Access-Control-Allow-Origin': '*',
         },
       })
-        .then((response) => { console.log(response.data); alert(response.data.message)})
+        .then((response) => { console.log(response.data); alert(response.data.message) })
         .catch((error) => { console.log(error); alert('there was some error in creating, Please try again') })
     },
   },

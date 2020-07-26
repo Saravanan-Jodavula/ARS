@@ -25,6 +25,9 @@
     <va-card v-if="detailsFlag" :title="$t('Profile Details')">
       <div class="flex row mt-2 pa-2">
         <div class="col-md-4 col-lg-4">
+          <h1>Name: {{this.$store.state.name}}</h1>
+        </div>
+        <div class="col-md-4 col-lg-4">
           <h1>Profile ID: {{this.$store.state.pid}}</h1>
         </div>
         <div class="col-md-4 col-lg-4">
@@ -42,6 +45,10 @@
         <div class="col-md-4 col-lg-4">
           <h1>Disability Info:</h1>
           <p v-for="i in this.$store.state.disability_info" :key="i">{{i}}</p>
+        </div>
+        <div class="col-md-4 col-lg-4">
+          <h1>Sports:</h1>
+          <p v-for="i in this.$store.state.sports" :key="i">{{i}}</p>
         </div>
       </div>
     </va-card>

@@ -5,12 +5,9 @@
   >
     <div class="app-navbar__content row">
       <div class="app-navbar__menu-container">
- 
         <router-link class="py-5 flex-center" to="/">
           <h1  class="mr-3  va-button__content__icon-left" style="font-size: 30px; color: #bce322; padding-bottom: 60px;">Aditya Mehta Foundation</h1>
         </router-link>
- 
-
         <router-link
           class="app-navbar__logo mr-3"
           to="/"

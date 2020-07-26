@@ -15,9 +15,11 @@ const store = new Vuex.Store({
   },
   state: {
     pid: null,
-    age: 24,
-    height: 5,
-    weight: 57,
+    age: null,
+    height: null,
+    weight: null,
+    name: null,
+    sports: null,
     disability_info: {},
     avgLabels: [],
     avgDataUsers: [],
@@ -139,12 +141,27 @@ const store = new Vuex.Store({
     },
     profileDetails (state, obj) {
       state.pid = obj.profile_id
+      state.name = obj.name
+      state.sports = obj.sports
       state.age = obj.age
       state.weight = obj.weight
       state.height = obj.height
       state.disability_info = obj.disability_info
     },
+    initialiseStore (state) {
+      // Check if the ID exists
+      // console.log('initialise store')
+      if (localStorage.getItem('amfStore')) {
+        // Replace the state object with the stored item
+        this.replaceState(
+          Object.assign(state, JSON.parse(localStorage.getItem('store'))),
+        )
+      }
+    },
   },
+})
+store.subscribe((_mutation, state) => {
+  localStorage.setItem('amfStore', JSON.stringify(state))
 })
 
 Vue.use(VuexI18n.plugin, store)

@@ -45,7 +45,7 @@
 
 <script>
 import io from 'socket.io-client'
-var socket = io.connect('http://localhost:8000')
+var socket = io.connect('http://208.117.82.169:8000')
 export default {
   name: 'app',
   data () {

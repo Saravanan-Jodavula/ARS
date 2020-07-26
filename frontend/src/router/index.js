@@ -3,12 +3,13 @@ import Router from 'vue-router'
 import AuthLayout from '../components/auth/AuthLayout'
 import AppLayout from '../components/admin/AppLayout'
 import store from '../store/index'
+store.commit('initialiseStore')
 
 Vue.use(Router)
 
-const EmptyParentComponent = {
-  template: '<router-view></router-view>',
-}
+// const EmptyParentComponent = {
+//   template: '<router-view></router-view>',
+// }
 
 const demoRoutes = []
 console.log('URL IS', process.env.VUE_APP_BACKEND_URL)
