@@ -36,8 +36,12 @@ const store = new Vuex.Store({
     refresh1: false,
     refresh2: false,
     refresh3: false,
+    isAuthenticated: true,
   },
   mutations: {
+    login (state) {
+      state.isAuthenticated = true
+    },
     flushState (state) {
       console.log('flushing....')
       state.pid = null
@@ -68,7 +72,7 @@ const store = new Vuex.Store({
       state.refresh2 = !state.refresh2
       state.refresh3 = !state.refresh3
     },
-    login (state, obj) {
+    averageMutation (state, obj) {
       state.avgDataTotal = obj.avgDataTotal
       state.avgDataUsers = obj.avgDataUsers
       state.pid = obj.pid
@@ -119,6 +123,7 @@ const store = new Vuex.Store({
       state.globalMin.push(obj.totalMin)
     },
     logout (state, obj) {
+      state.isAuthenticated = false
       state.pid = null
       state.avgLabels = []
       state.avgDataUsers = []

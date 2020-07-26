@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import AuthLayout from '../components/auth/AuthLayout'
 import AppLayout from '../components/admin/AppLayout'
+import store from '../store/index'
 
 Vue.use(Router)
 
@@ -38,6 +39,14 @@ export default new Router({
       name: 'Admin',
       path: '/admin',
       component: AppLayout,
+      beforeEnter: function (to, from, next) {
+        if (store.state.isAuthenticated) {
+          next()
+        } else {
+          next({ name: 'login' })
+          alert("you don't have permissions for this comoponent")
+        }
+      },
       meta: {
         requiresAuth: true,
       },
@@ -47,6 +56,14 @@ export default new Router({
           path: 'profileselect',
           component: () => import('../components/profileselect/ProfileSelect.vue'),
           default: true,
+          beforeEnter: function (to, from, next) {
+            if (store.state.isAuthenticated) {
+              next()
+            } else {
+              next({ name: 'login' })
+              alert("you don't have permissions for this comoponent")
+            }
+          },
           meta: {
             requiresAuth: true,
           },
@@ -56,6 +73,14 @@ export default new Router({
           path: 'dashboard',
           component: () => import('../components/dashboard/Dashboard.vue'),
           default: true,
+          beforeEnter: function (to, from, next) {
+            if (store.state.isAuthenticated) {
+              next()
+            } else {
+              next({ name: 'login' })
+              alert("you don't have permissions for this comoponent")
+            }
+          },
           meta: {
             requiresAuth: true,
           },
@@ -65,6 +90,14 @@ export default new Router({
           path: 'charts',
           component: () => import('../components/statistics/charts/Charts.vue'),
           default: true,
+          beforeEnter: function (to, from, next) {
+            if (store.state.isAuthenticated) {
+              next()
+            } else {
+              next({ name: 'login' })
+              alert("you don't have permissions for this comoponent")
+            }
+          },
           meta: {
             requiresAuth: true,
           },
@@ -74,6 +107,14 @@ export default new Router({
           path: 'live',
           component: () => import('../components/live/LiveData.vue'),
           default: true,
+          beforeEnter: function (to, from, next) {
+            if (store.state.isAuthenticated) {
+              next()
+            } else {
+              next({ name: 'login' })
+              alert("you don't have permissions for this comoponent")
+            }
+          },
           meta: {
             requiresAuth: true,
           },

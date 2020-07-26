@@ -144,7 +144,7 @@ export default {
           objj.avgDataTotal.push(resp.data.totalAverage)
         })
         .catch((err) => console.log(err))
-        .then(() => this.$store.commit('login', objj))
+        .then(() => this.$store.commit('averageMutation', objj))
       await axios.get(`${process.env.VUE_APP_BACKEND_URL}/session/currentvsall/left-leg/${this.pid}`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
