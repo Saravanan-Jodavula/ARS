@@ -3,10 +3,10 @@
     <va-card
       :title="$t('User Average vs Total Average')"
     >
-      <va-button>
+      <va-button @click="rpiStart">
         Start Session
       </va-button>
-      <va-button color="danger">
+      <va-button color="danger" @click="rpiEnd">
         End Session
       </va-button>
     </va-card>
@@ -88,7 +88,41 @@ export default {
         .then((response) => { console.log(response.data); alert(response.data.message) })
         .catch((error) => { console.log(error); alert('there was some error in creating, Please try again') })
     },
-  },
+  rpiStart () {
+      axios.get(`${process.env.VUE_APP_BACKEND_URL}/endpoint`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+      axios.post(`${response.data.endpoint}/startsession`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => { console.log(resp.data); alert("session started") })
+        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
+         })
+        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
+    },
+    rpiEnd () {
+      axios.get(`${process.env.VUE_APP_BACKEND_URL}/endpoint`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {
+      axios.post(`${response.data.endpoint}/endsession`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((resp) => { console.log(resp.data); alert("session started") })
+        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
+         })
+        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
+    },
+  }
 }
 </script>
 
