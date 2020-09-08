@@ -51,7 +51,7 @@ let pushSession = function(req,res) {
         console.log('connected')
       }
     })
-    client.query("update endpoint set link=$1 where id=url;",[req.body.link]).then(()=>client.end())
+    client.query("update endpoint set link=$1 where id=$2;",[req.body.link, "url"]).then(()=>client.end())
     .then((response)=>{res.status(200).json({message: "Endpoint Changed"});  client.end()})
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
@@ -66,8 +66,8 @@ let pushSession = function(req,res) {
         console.log('connected')
       }
     })
-    client.query("select * from endpoint where id=url;")
-    .then((response)=>{res.status(200).json({endpoint: response.rows}); client.end()})
+    client.query("select * from endpoint where id='url';")
+    .then((response)=>{res.status(200).json({endpoint: response.rows[0].link}); client.end()})
     .catch((error)=>{res.status(400).json(error); console.log(error); client.end()})
   }
 let pushProfile = function(req,res) {
