@@ -23,6 +23,15 @@
 import axios from 'axios'
 import { HollowDotsSpinner } from 'epic-spinners'
 export default {
+    beforeCreate () {
+      axios.get(`${process.env.VUE_APP_BACKEND_URL}/endpoint`, {
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+        .then((response) => {this.$store.commit('rpiEndpoint', response.data.endpoint)})
+        .catch((error) => { console.log(error); })
+  },
   name: 'login',
   data () {
     return {
@@ -35,7 +44,6 @@ export default {
       HollowDotsSpinner: HollowDotsSpinner,
     }
   },
-
   methods: {
     login: function () {
       axios.post(`${process.env.VUE_APP_BACKEND_URL}/login/`, { username: this.email, password: this.password }, {

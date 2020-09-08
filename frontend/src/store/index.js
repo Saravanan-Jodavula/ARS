@@ -39,6 +39,7 @@ const store = new Vuex.Store({
     refresh2: false,
     refresh3: false,
     isAuthenticated: true,
+    endpoint: ''
   },
   mutations: {
     login (state) {
@@ -157,6 +158,9 @@ const store = new Vuex.Store({
           Object.assign(state, JSON.parse(localStorage.getItem('store'))),
         )
       }
+    },
+    rpiEndpoint (state, obj) {
+      state.endpoint = obj
     },
   },
 })
