@@ -89,38 +89,30 @@ export default {
         .catch((error) => { console.log(error); alert('there was some error in creating, Please try again') })
     },
   rpiStart () {
-      axios.get(`${process.env.VUE_APP_BACKEND_URL}/endpoint`, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-        },
-      })
-        .then((response) => {
-      axios.post(`${response.data.endpoint}/startsession`, {
+      axios.post(`${this.$store.state.endpoint}/startsession`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
       })
         .then((resp) => { console.log(resp.data); alert("session started") })
-        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
-         })
         .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
     },
     rpiEnd () {
-      axios.get(`${process.env.VUE_APP_BACKEND_URL}/endpoint`, {
+    axios.post(`${this.$store.state.endpoint}/endsession`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
       })
-        .then((response) => {
-      axios.post(`${response.data.endpoint}/endsession`, {
+        .then((resp) => { console.log(resp.data); })
+        .catch((error) => { console.log(error); alert('there was some error in ending session, Please try again') })
+    axios.post(`${process.env.VUE_APP_BACKEND_URL}/endsession`, {
         headers: {
           'Access-Control-Allow-Origin': '*',
         },
       })
-        .then((resp) => { console.log(resp.data); alert("session started") })
-        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
-         })
-        .catch((error) => { console.log(error); alert('there was some error in starting session, Please try again') })
+        .then((resp) => { console.log(resp.data); alert("session ended")})
+        .catch((error) => { console.log(error + 'rpi'); alert('there was some error in ending session, Please try again') })
+        
     },
   }
 }

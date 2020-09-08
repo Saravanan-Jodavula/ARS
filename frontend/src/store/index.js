@@ -39,7 +39,7 @@ const store = new Vuex.Store({
     refresh2: false,
     refresh3: false,
     isAuthenticated: true,
-    endpoint: ''
+    endpoint: 'http://208.117.82.169:8000'
   },
   mutations: {
     login (state) {
